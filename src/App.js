@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+import Login from "./pages/login";
 
-function App() {
+import ReactNotification from "react-notifications-component";
+import { AuthContext } from "./utils/contexts";
+import { isUserLoged } from "./api/auth";
+
+import Routing  from "./routes/Routing";
+
+export default function App() {
+  // Userstate for the user
+  const [user, setUser] = useState(null);
+  const [loadUser, setLoadUser] = useState(false);
+  const [refreshCheckLogin, setRefreshCheckLogin] = useState(false);
+
+  useEffect(() => {
+    setUser(isUserLoged());
+    setRefreshCheckLogin(false);
+    setLoadUser(true);
+  }, [refreshCheckLogin])
+
+  if (!loadUser) return null;
+  // Return main
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthContext.Provider value={user}>
+      <ReactNotification /> 
+      { user ? <Routing setRefreshCheckLogin={setRefreshCheckLogin} /> : <Login setRefreshCheckLogin={setRefreshCheckLogin} /> }
+    </AuthContext.Provider>
   );
 }
-
-export default App;

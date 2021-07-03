@@ -1,0 +1,29 @@
+.wrapper-button-article{
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .btn-create-article{
+    background: -prefix-linear-gradient(left, #0060A6, #28A6DF);
+    background: linear-gradient(to right, #0060A6, #28A6DF);
+    display: block;
+    height: 50px;
+    text-align: center;
+    border-radius: 15px;
+    padding: 12px 25px;
+    color: white;
+    font-weight: 600;
+    margin: 0 0 0 auto;
+    width: 200px;
+    img{
+      width: 30px;
+      margin-top: -2px;
+      margin-right: 10px;
+    }
+  }
+  a{
+    text-decoration: none;
+  }
+}

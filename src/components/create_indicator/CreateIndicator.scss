@@ -1,0 +1,101 @@
+@import "../../scss/index.scss";
+
+.wrap-indicator{
+  h3{
+    color: #225DA9;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  .label-indicator{
+    display: block;
+    width: 100%;
+    float: left;
+    font-size: 18px;
+    font-weight: bold;
+    color: $primary-color;
+  }
+  .control-indicator:focus{
+    outline: none;
+    box-shadow: none;
+  }
+  .control-indicator{
+    height: 55px;
+    border-radius: 12px;
+    border: 2px solid #225DA9;
+    padding: 15px;
+    color: gray;
+  }
+  .indicator-chart{
+    padding: 0;
+    input[type="radio"] {
+      display: none;
+    }
+    input[type="radio"]:checked + label{
+      background: #eff5fc;
+      border: 2px solid #007bff;
+    }
+    input[type="radio"]:checked + label:after {
+      content: "✓";
+      position: absolute;
+      border-radius: 0 10px 0 10px;
+      width: 25px;
+      height: 25px;
+      right: 47px;
+      top: 0px;
+      background-color: #007bff;
+      color: #fff;
+      text-align: center;
+      font-size: 14px;
+      font-weight: bold;
+      padding-top: 3px;
+      letter-spacing: 0.2px;
+    }
+    label {
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      height: 130px;
+      padding: 30px;
+      margin-bottom: 50px;
+      border: 2px solid #225DA9;
+      transition: 0.3s;
+      width: 130px;
+    }
+    label:hover {
+      transition: all 0.5s ease 0s;
+    }
+  }
+  .btn-list-input{
+    border-radius: 30px;
+    border: none;
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 5px;
+    height: 40px;
+    width: 40px;
+  }
+
+  .remove{
+    background-color: crimson;
+  }
+  .add{
+    background: -prefix-linear-gradient(left, #0060A6, #28A6DF);
+    background: linear-gradient(to right, #0060A6, #28A6DF);
+    margin-left: 10px;
+  }
+  .btn-save{
+    padding: 15px;
+    border-radius: 15px;
+    width: 250px;
+    height: 55px;
+    text-align: center;
+    background: -prefix-linear-gradient(left, #0060A6, #28A6DF);
+    background: linear-gradient(to right, #0060A6, #28A6DF);
+    color: white;
+    text-decoration: none;
+    border: none;
+  }
+  
+}

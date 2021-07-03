@@ -1,0 +1,28 @@
+@import "../../scss/index.scss";
+
+.login{
+  &__left{
+    background-color: $background-color;
+    display: flex;
+    align-items: center;
+    
+    > div{
+      width: 500px;
+      margin: 0 auto;
+      text-align: center;
+
+      img{
+        width: 230px;
+        margin-bottom: 50px;
+      }
+
+    }
+  }
+  &__right{
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

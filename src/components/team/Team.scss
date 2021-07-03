@@ -1,0 +1,131 @@
+@import "../../scss/index.scss";
+
+.wrap-btn-board{
+  padding: 15px;
+  border-radius: 15px;
+  width: 250px;
+  height: 55px;
+  text-align: center;
+  background: -prefix-linear-gradient(left, #0060A6, #28A6DF);
+  background: linear-gradient(to right, #0060A6, #28A6DF);
+  color: white;
+  text-decoration: none;
+  float:right;
+  
+    img{
+      width: 30px;
+      margin-top: -5px;
+      margin-right: 10px;
+    }
+}
+
+.tabler{
+  color: #225DA9;
+}
+
+.table-board{
+  border: none;
+  border-collapse: separate !important;
+  border-spacing: 0px 20px !important;
+}
+
+.tr-table{
+  th,
+  td{
+    border: none !important;
+    border-top: none !important;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 0px;
+  }
+}
+
+.back{
+  background-color: #F2F5FA !important;
+
+  td{
+    padding: 30px 10px;
+
+    img{
+      display: block;
+      width: 50px;
+      margin: auto;
+    }
+  }
+
+  td:first-child{
+    border-radius: 10px 0 0 10px;
+  }
+
+  td:last-child{
+    border-radius: 0px 10px 10px 0px;
+  }
+}
+
+.pencil{
+  display: inline-block !important;
+  width: 20px !important;
+  margin: auto;
+}
+
+.powerfull{
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  background-color: white;
+  border-radius: 50px;
+  padding: 5px 0;
+  margin-right: 10px;
+}
+
+.view{
+  display: inline-block !important;
+  width: 20px !important;
+  margin: auto !important;
+}
+
+.modal-header{
+  border-bottom: none;
+}
+
+.title-modal{
+  font-size: 22px;
+  color: #225DA9;
+}
+
+.lab-board{
+  display: block;
+  width: 100%;
+  float: left;
+  font-size: 14px;
+  font-weight: bold;
+  color: $primary-color;
+}
+
+.in-board:focus{
+  outline: none;
+  box-shadow: none;
+  background-color: #F4F5F7;
+}
+
+.in-board{
+  width: 270px;
+  background-color: #F4F5F7;
+  border-color: #CCCCCC;
+  font-size: 14px;
+  height: 40px;
+}
+
+.create-btn-board{
+  padding: 15px;
+  border-radius: 15px;
+  width: 150px;
+  height: 55px;
+  text-align: center;
+  background: -prefix-linear-gradient(left, #0060A6, #28A6DF);
+  background: linear-gradient(to right, #0060A6, #28A6DF);
+  color: white;
+  text-decoration: none;
+  float:right;
+  margin-top: 20px;
+}

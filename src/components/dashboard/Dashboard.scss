@@ -1,0 +1,71 @@
+@import "../../scss/index.scss";
+
+.card-sigma{
+  background-color: $background-color;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+
+  h5{
+    color: #225DA9;
+    margin-bottom: 20px;
+  }
+
+  .wrap-bitrh,
+  .wrap-task{
+    margin-top: 20px;
+
+    .card-bitrh,
+    .card-task{
+      background-color: white;
+      border-radius: 10px;
+      text-align: left;
+      padding: 10px 20px;
+      margin-bottom: 10px;
+
+      .name-birth{
+        display: block;
+        color: #225DA9;
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 3px;
+      }
+
+      .date-birth{
+        display: block;
+        color: #225DA9;
+        font-size: 12px;
+        margin-top: -2px;
+      }
+
+      .name-task{
+        float: left;
+        color: #225DA9;
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 10px;
+      }
+      
+      .number-task{
+        float: right;
+        color: #28A6DF;
+        font-size: 30px;
+        font-weight: bold;
+        margin-top: 3px;
+      }
+    }
+  }
+}
+
+.BarChart{
+  width: 100% !important;
+}
+
+.label-donut{
+  display: block;
+  margin-top: 7px;
+  font-size: 14px;
+  line-height: 17px;
+  color: #225DA9;
+}
