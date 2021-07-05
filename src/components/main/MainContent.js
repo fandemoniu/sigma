@@ -56,7 +56,7 @@ export default function Main(props) {
           <ModalProfile
             show={modalShow}
             onHide={() => setModalShow(false)}
-            setlogin={setRefreshCheckLogin}
+            setRefreshCheckLogin={setRefreshCheckLogin}
             userdata={userData}
           />
         </div>
@@ -70,7 +70,7 @@ export default function Main(props) {
 
 // Modal profile struct
 const ModalProfile = (props) => {
-  const { setlogin, userdata } = props;
+  const { setRefreshCheckLogin, userdata } = props;
   // Funtion Logiut
   const logout = async () => {
     // Get the current token 
@@ -82,7 +82,7 @@ const ModalProfile = (props) => {
       // Remove token from localstore
       logoutUser();
       // Check login 
-      setlogin(true);
+      setRefreshCheckLogin(true);
     }
   }
 

@@ -145,7 +145,6 @@ export default function CreateArticle() {
       }
     }
   }
-  console.log(section);
   return (
     <Container>
       <Link to="/wiki">
@@ -303,7 +302,6 @@ function MyVerticallyCenteredModal(props) {
 
 function ModalSeccion(props) {
   const { sendsection, muni } = props;
-  console.log(props);
   return (
     <Modal
       {...props}

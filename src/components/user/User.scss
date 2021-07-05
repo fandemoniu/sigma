@@ -102,3 +102,88 @@
     width: 180px;
   }
 }
+
+.edit-role{
+  background-color: #225DA9;
+  border: none;
+  display: block;
+  padding: 0px 10px;
+  font-size: 12px;
+  margin-top: 15px;
+}
+
+.edit-role:focus{
+  outline: none;
+  box-shadow: none;
+}
+
+.lab-edit-role{
+  display: block;
+  width: 100%;
+  float: left;
+  font-size: 18px;
+  font-weight: bold;
+  color: $primary-color;
+}
+
+.e-role:focus{
+  outline: none;
+  box-shadow: none;
+}
+
+.e-role{
+  height: 50px;
+  border-radius: 10px;
+  border: 2px solid #225DA9;
+  padding: 20px;
+  color: gray;
+  width: 100%;
+}
+
+.edit-custome{
+  display: block;
+  border: solid 2px #F2F5FA;
+  background-color: #F2F5FA;
+  width: 100%;
+  height: 60px;
+  margin-top:10px;
+  color: #225DA9;
+  border-radius: 7px; 
+  line-height: 55px;
+  text-align:left;
+  padding: 0px 25px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+
+.e-perm[type=checkbox] {
+  display: none;
+}
+
+.e-perm:checked + label:before {
+  content: "✓ ";
+}
+
+.e-perm:checked + label {
+  border: solid 2px #225DA9;
+  color: #225DA9;
+}
+.o{
+  margin-bottom: 10px;
+}
+
+.save-rol{
+  padding: 15px;
+  border-radius: 15px;
+  width: 100%;
+  height: 55px;
+  text-align: center;
+  background: -prefix-linear-gradient(left, #0060A6, #28A6DF);
+  background: linear-gradient(to right, #0060A6, #28A6DF);
+  color: white;
+  text-decoration: none;
+  margin-bottom: 30px;
+  border: none;
+}

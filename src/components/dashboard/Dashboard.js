@@ -321,7 +321,7 @@ export default function Dashboard() {
                 loadBirthday
                   ?
                   (
-                    <div className="text-center clipor">
+                    <div className="text-center dash-clipor">
                       <Spinner animation="border" role="status" variant="primary"></Spinner>
                     </div>
                   )

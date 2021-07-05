@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Table, Modal, Button, Form, Spinner } from "react-bootstrap";
+import { Container, Row, Col, Table, Modal, Button, Form, Spinner, Alert } from "react-bootstrap";
 
 import Edit from "../../assets/images/edit.png";
 import Save from "../../assets/images/save.svg";
@@ -113,24 +113,28 @@ export default function JoinTeam() {
   return (
     <Container fluid>
       <h3 className="tabler">Unete al equipo</h3>
-      <Table striped bordered hover className="table-board">
-        <thead>
-          <tr className="tr-table">
-            <th></th>
-            <th>Nombre</th>
-            <th>Estado</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            loading
-              ?
-              <div className="text-center clipor-user">
-                <Spinner animation="border" role="status" variant="primary"></Spinner>
-              </div>
-              :
-              <>
+      {
+        loading
+          ?
+          <div className="text-center indi-clipor">
+            <Spinner animation="border" role="status" variant="primary"></Spinner>
+          </div>
+          : !team.length > 0
+            ?
+              <Alert variant="primary mr-50 text-center">
+                No se encontraron registros de usuarios en la base de datos.
+              </Alert>
+            :
+            <Table striped bordered hover className="table-board">
+              <thead>
+                <tr className="tr-table">
+                  <th></th>
+                  <th>Nombre</th>
+                  <th>Estado</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
                 {
                   team.map((t, i) => {
                     return (
@@ -149,11 +153,10 @@ export default function JoinTeam() {
                     )
                   })
                 }
-              </>
-          }
+              </tbody>
+            </Table>
+      }
 
-        </tbody>
-      </Table>
       <>
         <Modal
           size="lg"

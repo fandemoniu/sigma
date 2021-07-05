@@ -5,10 +5,10 @@ import CreateArticle from "../../components/create_article";
 
 import "./NewArticle.scss";
 
-export default function NewArticle() {
+export default function NewArticle({setRefreshCheckLogin}) {
   return (
     <div>
-      <BasicLayout>
+      <BasicLayout setRefreshCheckLogin={setRefreshCheckLogin}>
         <CreateArticle/>
       </BasicLayout>
     </div>

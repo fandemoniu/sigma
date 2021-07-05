@@ -73,7 +73,6 @@ export default function WikiComponent() {
                           {
                             articles.map(content => {
                               const { versions } = content;
-                              console.log(versions);
                               return (
                                 <Tab.Pane eventKey={`#link${content.id}`} key={content.id}>
                                   {parse(content.content)}
@@ -89,9 +88,9 @@ export default function WikiComponent() {
                                     </thead>
                                     <tbody>
                                       {
-                                        versions.map( ver => {
+                                        versions.map( (ver, i) => {
                                           return (
-                                            <tr>
+                                            <tr key={i}>
                                               <td>{ver.version_code}</td>
                                               <td>{ver.folio}</td>
                                               <td>{ver.description}</td>

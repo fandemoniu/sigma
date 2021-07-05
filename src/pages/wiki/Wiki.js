@@ -5,10 +5,10 @@ import WikiComponent from "../../components/wiki";
 
 import "./Wiki.scss";
 
-export default function Wiki() {
+export default function Wiki({setRefreshCheckLogin}) {
   return (
     <div>
-      <BasicLayout>
+      <BasicLayout setRefreshCheckLogin={setRefreshCheckLogin}>
         <WikiComponent />
       </BasicLayout>
     </div>

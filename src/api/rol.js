@@ -20,3 +20,23 @@ export const createRol = async (data) => {
   // Return response;
   return result;
 }
+
+export const editRol = async (data, id) => {
+  // Api path
+  const url = `${API_HOST}/api/roles/${id}`;
+  // Generate the params
+  const params = {
+    method: "PUT",
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + getToken()
+    }
+  }
+  // Fetch request api login
+  const response = await fetch(url, params);
+  // Json params
+  const result = await response.json();
+  // Return response;
+  return result;
+}

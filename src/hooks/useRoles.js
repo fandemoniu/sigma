@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { API_HOST } from '../utils/constant';
 import { getToken } from "../api/auth";
 
-export default function useRoles() {
+export default function useRoles(bandera) {
   // State main
   const [state, setstate] = useState({
     data: [],
@@ -31,7 +31,7 @@ export default function useRoles() {
         })
       })
     
-  },[])
+  },[bandera])
 
   return state;
 

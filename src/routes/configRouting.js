@@ -75,6 +75,6 @@ export default [
   },
   {
     path: "*",
-    page: Error404
+    page: Home
   }
 ];

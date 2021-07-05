@@ -123,3 +123,16 @@
   border: solid 2px #225DA9;
   color: #225DA9;
 }
+
+.edit-rol{
+  background-color: #225DA9;
+  border: none;
+  float: right;
+  padding: 0px 10px;
+  font-size: 14px;
+}
+
+.edit-rol:focus{
+  outline: none;
+  box-shadow: none;
+}

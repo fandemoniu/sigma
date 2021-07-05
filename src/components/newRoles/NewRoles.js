@@ -18,6 +18,8 @@ import "./NewRoles.scss";
 
 export default function NewRoles() {
 
+  const [edit, setEdit] = useState(false);
+
   const [modalShow, setModalShow] = useState(false);
 
   const [checked, setChecked] = useState(false);
@@ -65,6 +67,8 @@ export default function NewRoles() {
     });
   }
 
+  console.log("Roles", rol);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -90,7 +94,7 @@ export default function NewRoles() {
 
   return (
     <>
-    <Link to="/users">
+      <Link to="/users">
         <Button className="atras">Regresar</Button>
       </Link>
       <div className="wrap-personal">
@@ -138,6 +142,7 @@ export default function NewRoles() {
                             <Media>
                               <Media.Body>
                                 <span className="name-user">{rol.name}</span>
+                                {/* <Button className="edit-rol" onClick={() => setEdit(true)}>Editar</Button> */}
                               </Media.Body>
                             </Media>
                           </div>
@@ -184,6 +189,10 @@ export default function NewRoles() {
             </div>
           </Col>
         </Row>
+        <EditModal
+          show={edit}
+          onHide={() => setEdit(false)}
+        />
         <MyVerticallyCenteredModal
           show={modalShow}
           onHide={() => setModalShow(false)}
@@ -235,4 +244,32 @@ const notification = (title, message, type) => {
       onScreen: true
     }
   });
+}
+
+function EditModal(props) {
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Modal heading
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <h4>Centered Modal</h4>
+        <p>
+          Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+          dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+          consectetur ac, vestibulum at eros.
+        </p>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>Close</Button>
+      </Modal.Footer>
+    </Modal>
+  );
 }

@@ -13,9 +13,7 @@ import "./LoginForm.scss";
 
 export default function LoginForm(props) {
 
-  console.log(props);
-
-  const { setRefreshCheckLogin } = props;
+  const {setRefreshCheckLogin} = props;
 
   const [googleLoginUrl, setGoogleLoginUrl] = useState(null);
 
@@ -79,7 +77,6 @@ export default function LoginForm(props) {
     }
   }
 
-  console.log('Auth Google', googleLoginUrl);
   return (
     <div>
       <img src={Sigma} alt={"Lean Six Sigma"} />

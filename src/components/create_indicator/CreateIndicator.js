@@ -141,7 +141,7 @@ export default function CreateIndicator() {
             {
               inputList.map((campo, indice) => {
                 return (
-                  <Row>
+                  <Row key={indice}>
                     <Col lg={4}>
                       <Form.Group>
                         <Form.Control

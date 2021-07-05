@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Table, Modal, Button, Form, Spinner } from "react-bootstrap";
+import { Container, Row, Col, Table, Modal, Button, Form, Spinner, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import "./Indicators.scss";
@@ -27,23 +27,27 @@ export default function IndicatorsComponent() {
         </Button>
       </Link>
       <h3 className="tabler">Mis indicadores</h3>
-      <Table striped bordered hover className="table-board">
-        <thead>
-          <tr className="tr-table ">
-            <th></th>
-            <th>Indicador</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            loading
-              ?
-              <div className="text-center clipor-user">
-                <Spinner animation="border" role="status" variant="primary"></Spinner>
-              </div>
-              :
-              <>
+      {
+        loading
+          ?
+          <div className="text-center indi-clipor">
+            <Spinner animation="border" role="status" variant="primary"></Spinner>
+          </div>
+          : !indicator.length > 0
+            ?
+              <Alert variant="primary mr-50 text-center">
+                No se encontraron registros de indicadores en la base de datos.
+              </Alert>
+            :
+            <Table striped bordered hover className="table-board">
+              <thead>
+                <tr className="tr-table ">
+                  <th></th>
+                  <th>Indicador</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
                 {
                   indicator.map((ind, i) => {
                     return (
@@ -60,9 +64,6 @@ export default function IndicatorsComponent() {
                         </td>
                         <td>{ind.name}</td>
                         <td className="text-center">
-                          {/* <div className="powerfull">
-                            <img src={Edit} className="pencil" alt="Edit" />
-                          </div> */}
                           <Link to={`/attribute/${ind?.id}`}>
                             <div className="powerfull">
                               <img src={Edit} className="pencil" alt="Edit" />
@@ -73,10 +74,10 @@ export default function IndicatorsComponent() {
                     )
                   })
                 }
-              </>
-          }
-        </tbody>
-      </Table>
+              </tbody>
+            </Table>
+
+      }
       <div className="wrap-indi">
         <img src={Indi} alt="Greom" />
       </div>
