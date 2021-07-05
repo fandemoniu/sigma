@@ -10,6 +10,8 @@ import { useGetBirthday } from "../../api/birthday";
 import Avatar from "../../assets/images/avatar.svg";
 import Mascot from "../../assets/images/mascota-cumple.svg";
 
+import useIndicators from "../../hooks/useIndicators";
+
 import "./Dashboard.scss";
 
 const data = [
@@ -71,36 +73,136 @@ const data_marketing = [
 
 export default function Dashboard() {
 
+  const { data: indicator, loading } = useIndicators();
   const { data: birthday, load: loadBirthday } = useGetBirthday();
+
+  console.log(indicator);
 
   return (
     <Container fluid>
       <Row>
-        <Col lg={4}>
-          <div className="card-sigma">
-            <h5>Ventas</h5>
-            <div style={{ width: '100%', height: 150 }}>
-              <ResponsiveContainer>
-                <BarChart data={data} className="BarChart">
-                  <Bar dataKey="uv" fill="#225DA9" />
-                  <XAxis dataKey="name" />
-                  <Tooltip />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-          <div className="card-sigma">
-            <h5>Marketing</h5>
-            <div style={{ width: '100%', height: 150 }}>
-              <ResponsiveContainer>
-                <BarChart data={data_marketing} className="BarChart">
-                  <Bar dataKey="pv" fill="#225DA9" />
-                  <XAxis dataKey="name" />
-                  <Tooltip />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
+        <Col lg={12}>
+          <Row>
+            <Col lg={8}>
+              <Row>
+                {
+                  indicator.map(indicador => {
+                    return (
+                      <Col lg={indicador.columns * 2}>
+                        <div className="card-sigma">
+                          <h5>{indicador.name}</h5>
+                          <div style={{ width: '100%', height: 150 }}>
+                            {
+                              (
+                                indicador.chart_type === 'bar' && <span>Mostrando Barras</span>
+                              )
+                            }
+                          </div>
+                        </div>
+                      </Col>
+                    )
+                  })
+                }
+              </Row>
+            </Col>
+            <Col lg={4}>
+              <div className="card-sigma">
+                <h5>Cumpleaños</h5>
+                <div className="wrap-bitrh">
+                  {
+                    loadBirthday
+                      ?
+                      (
+                        <div className="text-center dash-clipor">
+                          <Spinner animation="border" role="status" variant="primary"></Spinner>
+                        </div>
+                      )
+                      :
+                      <>
+                        {
+                          birthday.map(birth => (
+                            <div className="card-bitrh" key={birth.id}>
+                              <Media>
+                                <img
+                                  src={Avatar}
+                                  alt="Usuario"
+                                  height={50}
+                                  width={50}
+                                  className="mr-2"
+                                />
+                                <Media.Body>
+                                  <span className="name-birth">{birth.name} {birth.last_name}</span>
+                                  <span className="date-birth">{Moment(birth.birthdate).format('dddd, D MMMM YYYY')}</span>
+                                </Media.Body>
+                              </Media>
+                            </div>
+                          ))
+                        }
+                      </>
+
+                  }
+                </div>
+                <div className="wrap-mascot-birth">
+                  <img
+                    src={Mascot}
+                    alt="Mascota Cumpleaños"
+                    height={130}
+                    width={200}
+                  />
+                </div>
+              </div>
+              <div className="card-sigma">
+                <h5>Top Tareas</h5>
+                <div className="wrap-task">
+                  <div className="card-task">
+                    <Media>
+                      <img
+                        src={Avatar}
+                        alt="Usuario"
+                        height={50}
+                        width={50}
+                        className="mr-2"
+                      />
+                      <Media.Body>
+                        <span className="name-task">John Doe</span>
+                        <span className="number-task">25</span>
+                      </Media.Body>
+                    </Media>
+                  </div>
+                  <div className="card-task">
+                    <Media>
+                      <img
+                        src={Avatar}
+                        alt="Usuario"
+                        height={50}
+                        width={50}
+                        className="mr-2"
+                      />
+                      <Media.Body>
+                        <span className="name-task">John Doe</span>
+                        <span className="number-task">12</span>
+                      </Media.Body>
+                    </Media>
+                  </div>
+                  <div className="card-task">
+                    <Media>
+                      <img
+                        src={Avatar}
+                        alt="Usuario"
+                        height={50}
+                        width={50}
+                        className="mr-2"
+                      />
+                      <Media.Body>
+                        <span className="name-task">John Doe</span>
+                        <span className="number-task">8</span>
+                      </Media.Body>
+                    </Media>
+                  </div>
+                </div>
+              </div>
+            </Col>
+          </Row>
         </Col>
         <Col lg={4}>
           <div className="card-sigma">
@@ -313,104 +415,19 @@ export default function Dashboard() {
             </Row>
           </div>
         </Col>
-        <Col lg={4}>
-          <div className="card-sigma">
-            <h5>Cumpleaños</h5>
-            <div className="wrap-bitrh">
-              {
-                loadBirthday
-                  ?
-                  (
-                    <div className="text-center dash-clipor">
-                      <Spinner animation="border" role="status" variant="primary"></Spinner>
-                    </div>
-                  )
-                  :
-                  <>
-                    {
-                      birthday.map(birth => (
-                        <div className="card-bitrh" key={birth.id}>
-                          <Media>
-                            <img
-                              src={Avatar}
-                              alt="Usuario"
-                              height={50}
-                              width={50}
-                              className="mr-2"
-                            />
-                            <Media.Body>
-                              <span className="name-birth">{birth.name} {birth.last_name}</span>
-                              <span className="date-birth">{Moment(birth.birthdate).format('dddd, D MMMM YYYY')}</span>
-                            </Media.Body>
-                          </Media>
-                        </div>
-                      ))
-                    }
-                  </>
-
-              }
-            </div>
-            <div className="wrap-mascot-birth">
-              <img
-                src={Mascot}
-                alt="Mascota Cumpleaños"
-                height={130}
-                width={200}
-              />
-            </div>
-          </div>
-          <div className="card-sigma">
-            <h5>Top Tareas</h5>
-            <div className="wrap-task">
-              <div className="card-task">
-                <Media>
-                  <img
-                    src={Avatar}
-                    alt="Usuario"
-                    height={50}
-                    width={50}
-                    className="mr-2"
-                  />
-                  <Media.Body>
-                    <span className="name-task">John Doe</span>
-                    <span className="number-task">25</span>
-                  </Media.Body>
-                </Media>
-              </div>
-              <div className="card-task">
-                <Media>
-                  <img
-                    src={Avatar}
-                    alt="Usuario"
-                    height={50}
-                    width={50}
-                    className="mr-2"
-                  />
-                  <Media.Body>
-                    <span className="name-task">John Doe</span>
-                    <span className="number-task">12</span>
-                  </Media.Body>
-                </Media>
-              </div>
-              <div className="card-task">
-                <Media>
-                  <img
-                    src={Avatar}
-                    alt="Usuario"
-                    height={50}
-                    width={50}
-                    className="mr-2"
-                  />
-                  <Media.Body>
-                    <span className="name-task">John Doe</span>
-                    <span className="number-task">8</span>
-                  </Media.Body>
-                </Media>
-              </div>
-            </div>
-          </div>
-        </Col>
       </Row>
     </Container>
   )
 }
+
+const BarSigma = () => {
+  return (
+    <ResponsiveContainer>
+      <BarChart data={data} className="BarChart">
+        <Bar dataKey="uv" fill="#225DA9" />
+        <XAxis dataKey="name" />
+        <Tooltip />
+      </BarChart>
+    </ResponsiveContainer>
+  )
+} 
