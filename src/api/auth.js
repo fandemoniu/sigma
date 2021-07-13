@@ -19,7 +19,6 @@ export const loginApi = async (user) => {
   }
   // Fetch request api login
   const response = await fetch(url, params);
-  console.log(response);
   // Json params
   const result = await response.json();
   // Return response;

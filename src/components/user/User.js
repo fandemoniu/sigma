@@ -407,7 +407,6 @@ const notification = (title, message, type) => {
 
 const initialUser = (users) => {
   const user = users[0];
-  console.log(users);
   return {
     name: "",
     last_name: "",

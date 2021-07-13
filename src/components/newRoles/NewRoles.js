@@ -67,8 +67,6 @@ export default function NewRoles() {
     });
   }
 
-  console.log("Roles", rol);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 

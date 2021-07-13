@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { Container, Row, Col, Form, Button, Spinner, Modal } from "react-bootstrap";
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
@@ -8,15 +8,76 @@ import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 import { values, size } from "lodash";
 import { store } from 'react-notifications-component';
+import { useDropzone } from 'react-dropzone';
 
 import { getWikiApiOnly, getWikiApi, updateArticleApi } from "../../api/wiki";
 
 import Success from "../../assets/images/success.svg";
 import Save from "../../assets/images/save.svg";
+import FileImage from "../../assets/images/file.svg";
 
 import "./EditArticle.scss";
 
-//import useFetchGet from "../../hooks/useFetchGet";
+const baseStyle = {
+  flex: 1,
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  padding: '20px',
+  borderWidth: 2,
+  borderRadius: 15,
+  height: 150,
+  justifyContent: 'center',
+  borderColor: '#225DA9',
+  borderStyle: 'dashed',
+  backgroundColor: '#fafafa',
+  color: '#bdbdbd',
+  outline: 'none',
+  transition: 'border .24s ease-in-out'
+};
+
+const activeStyle = {
+  borderColor: '#2196f3'
+};
+
+const acceptStyle = {
+  borderColor: '#00e676'
+};
+
+const rejectStyle = {
+  borderColor: '#ff1744'
+};
+
+const thumbsContainer = {
+  display: 'flex',
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  marginTop: 16
+};
+
+const thumb = {
+  display: 'inline-flex',
+  borderRadius: 2,
+  border: '1px solid #eaeaea',
+  marginBottom: 8,
+  marginRight: 8,
+  width: 100,
+  height: 100,
+  padding: 4,
+  boxSizing: 'border-box'
+};
+
+const thumbInner = {
+  display: 'flex',
+  minWidth: 0,
+  overflow: 'hidden'
+};
+
+const img = {
+  display: 'block',
+  width: 'auto',
+  height: '100%'
+};
 
 function EditArticleComponent(props) {
 
@@ -39,6 +100,54 @@ function EditArticleComponent(props) {
   // Operator for article
   const [articleLoading, setArticleLoading] = useState(false);
 
+  const [files, setFiles] = useState([]);
+
+  const {
+    acceptedFiles,
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragAccept,
+    isDragReject
+  } = useDropzone({
+    onDrop: acceptedFiles => {
+      setFiles(acceptedFiles.map(file => Object.assign(file, {
+        preview: file.type == 'image/png' || file.type == 'image/jpeg' ? URL.createObjectURL(file) : FileImage,
+      })));
+      setArticles({
+        ...articles,
+        documents: acceptedFiles,
+      })
+    }
+  });
+
+  const style = useMemo(() => ({
+    ...baseStyle,
+    ...(isDragActive ? activeStyle : {}),
+    ...(isDragAccept ? acceptStyle : {}),
+    ...(isDragReject ? rejectStyle : {})
+  }), [
+    isDragActive,
+    isDragReject,
+    isDragAccept
+  ]);
+
+  const thumbs = files.map(file => (
+    <div style={thumb} key={file.name}>
+      <div style={thumbInner}>
+        <img
+          src={file.preview}
+          style={img}
+        />
+      </div>
+    </div>
+  ));
+
+  useEffect(() => () => {
+    // Make sure to revoke the data uris to avoid memory leaks
+    files.forEach(file => URL.revokeObjectURL(file.preview));
+  }, [files]);
+
   // handleChange
   const handleChange = (e) => { };
 
@@ -54,13 +163,12 @@ function EditArticleComponent(props) {
 
     getWikiApi()
       .then(({ items }) => {
-        setSection(items.data);
+        setSection(items);
       }).catch((e) => console.log(e))
 
     getWikiApiOnly(params.id_article)
       .then(response => {
         if (response.message == "Article id does not exist!") {
-          console.log("No encontrado");
         } else {
           const articulo = response.items[0];
           setArticles(articleValues(articulo, params.id_sections));
@@ -93,7 +201,6 @@ function EditArticleComponent(props) {
   }
   // Handle submit
   const onSubmit = async (e) => {
-    console.log(articles);
     // Prevent default
     e.preventDefault();
     // Initial counter form zero
@@ -112,7 +219,6 @@ function EditArticleComponent(props) {
       setArticleLoading(true);
       // Send data to api
       const response = await updateArticleApi(articles, params.id_article);
-      console.log(response);
       // Validate response
       if (response.code == 200 && response.status == "success") {
         setArticleLoading(false);
@@ -196,6 +302,17 @@ function EditArticleComponent(props) {
                     </div>
                   </Col>
                 </Row>
+                <span className="labeli mb-15">Archivos</span>
+
+              <div>
+                <div {...getRootProps({ style })}>
+                  <input {...getInputProps()} />
+                  <span>Arrastre y suelte sus archivos aquí, o haga clic para seleccionar archivos</span>
+                </div>
+                <aside style={thumbsContainer}>
+                  {thumbs}
+                </aside>
+              </div>
                 <Row>
                   <Col lg={6}>
                     <Form.Group>

@@ -314,7 +314,6 @@ const PercentageSigma = ({ data }) => {
       <Row>
         {
           data.map(per => {
-            console.log(per);
             return (
               <Col lg={4}>
                 <Donut

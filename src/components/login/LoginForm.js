@@ -106,13 +106,13 @@ export default function LoginForm(props) {
         </Button>
       </Form>
       {
-        // googleLoginUrl &&
-        // (
-        //   <a className="google-button" href={googleLoginUrl} >
-        //     <img className="img-google" src={Google} />
-        //     <span>Inicia sesión con Google</span>
-        //   </a>
-        // )
+        googleLoginUrl &&
+        (
+          <a className="google-button" href={googleLoginUrl} >
+            <img className="img-google" src={Google} />
+            <span>Inicia sesión con Google</span>
+          </a>
+        )
       }
     </div>
   )

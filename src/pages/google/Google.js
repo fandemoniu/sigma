@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { API_HOST } from "../../utils/constant";
+import { setToken, setUserData } from "../../api/auth";
 
 export default function Google(props) {
-  console.log(props)
+  const {setRefreshCheckLogin} = props;
   const [login, setLogin] = useState({
     loading: true,
     error: null,
@@ -11,13 +12,19 @@ export default function Google(props) {
   useEffect(() => {
     fetch(`${API_HOST}/api/auth/google/callback${props.location.search}`, { method: "GET" })
       .then(response => response.json())
-      .then(data => setLogin({ loading: false, data }))
+      .then(data => {
+        // Save the token
+        setToken(data.token);
+        // Save data
+        setUserData(JSON.stringify(data.items.profile));
+        // Set state refresh login
+        setRefreshCheckLogin(true);
+      })
       .catch(error => console.log('error', error));
   }, [])
-  console.log(login);
   return (
-    <div>
-      <h1>Google</h1>
+    <div className="text-center">
+      <h1>Auth google ...</h1>
     </div>
   )
 }

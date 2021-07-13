@@ -56,10 +56,8 @@ export const getFile = async (id) => {
   // Fetch request api login
   fetch(url, params)
     .then( resp => {
-      console.log(resp);
       return resp.blob();
     }).then( blob => {
-      console.log(blob);
       return blob;
     })
   // // Json params
