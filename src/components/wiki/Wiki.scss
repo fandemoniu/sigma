@@ -171,3 +171,21 @@
   align-items: center;
   justify-content: center;
 }
+
+.down-file{
+  border: 2px solid #0060A6;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #225DA9;
+  display: block;
+  margin-top: 20px;
+  text-decoration: none !important;
+  text-transform: capitalize !important;
+  font-size: 14px;
+  padding: 10px;
+
+  img{
+    float: right;
+    margin-top: 2px;
+  }
+}

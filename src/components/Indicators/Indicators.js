@@ -6,13 +6,14 @@ import "./Indicators.scss";
 
 import Add from "../../assets/images/add.svg";
 import BarChart from "../../assets/images/bar-chart.svg";
-import Point from "../../assets/images/point.svg";
 import PieChart from "../../assets/images/pie-chart.svg";
-import OnlyData from "../../assets/images/only-data.svg";
 import Percentage from "../../assets/images/percentage.svg";
 import Cuadrado from "../../assets/images/cuadrado.svg";
 import Indi from "../../assets/images/indi.svg";
 import Edit from "../../assets/images/edit.png";
+import Gauge from "../../assets/images/gauge.svg";
+import Waves from "../../assets/images/waves.svg";
+import Donut from "../../assets/images/donut.svg";
 
 import useIndicators from "../../hooks/useIndicators";
 
@@ -55,10 +56,10 @@ export default function IndicatorsComponent() {
                         <td>
                           {
                             (ind.chart_type === 'bar' && <img src={BarChart} alt="BarChart" />) ||
-                            (ind.chart_type === 'point' && <img src={Point} alt="Point" />) ||
+                            (ind.chart_type === 'gauge' && <img src={Gauge} alt="Gauge" />) ||
                             (ind.chart_type === 'pie' && <img src={PieChart} alt="PieChart" />) ||
-                            (ind.chart_type === 'onlyData' && <img src={OnlyData} alt="OnlyData" />) ||
-                            (ind.chart_type === 'square' && <img src={Cuadrado} />) ||
+                            (ind.chart_type === 'waves' && <img src={Waves} alt="Waves" />) ||
+                            (ind.chart_type === 'donut' && <img src={Donut} />) ||
                             (ind.chart_type === 'percentage' && <img src={Percentage} />)
                           }
                         </td>

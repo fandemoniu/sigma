@@ -11,7 +11,7 @@ export default function useFetch(token, bandera) {
     getWikiApi(token)
     .then( wiki => {
       setstate({
-        data: wiki.items.data,
+        data: wiki.items,
         loading: false
       })
     })

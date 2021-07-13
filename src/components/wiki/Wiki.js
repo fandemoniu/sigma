@@ -8,10 +8,12 @@ import { getToken } from "../../api/auth";
 import Add from "../../assets/images/add.svg";
 import Geek from "../../assets/images/geek.svg";
 import Pencil from "../../assets/images/pencil.svg";
+import Down from "../../assets/images/down.svg";
 
 import "./Wiki.scss";
 import { Link } from 'react-router-dom';
 import parse from 'html-react-parser';
+import { API_HOST } from "../../utils/constant";
 
 export default function WikiComponent() {
   Moment.locale('en');
@@ -73,9 +75,30 @@ export default function WikiComponent() {
                           {
                             articles.map(content => {
                               const { versions } = content;
+                              const { documents } = content;
                               return (
                                 <Tab.Pane eventKey={`#link${content.id}`} key={content.id}>
-                                  {parse(content.content)}
+                                  { parse(content.content)}
+                                  <Row>
+                                    {
+                                      documents.map(documento => {
+                                        return (
+                                          <Col lg={6} key={documento.id}>
+                                            <a
+                                              className="down-file"
+                                              href={`${API_HOST}/storage/wiki/${content.id}-${content.title}/${documento.image}`}
+                                              download
+                                              target="_blank"
+                                            >
+                                            <span>{documento.image}</span>
+                                            <img src={Down} alt="Descargar"/>
+                                        </a>
+                                          </Col>
+
+                                        )
+                                      })
+                                    }
+                                  </Row>
                                   <Table className="version-table">
                                     <thead>
                                       <tr>
@@ -88,7 +111,7 @@ export default function WikiComponent() {
                                     </thead>
                                     <tbody>
                                       {
-                                        versions.map( (ver, i) => {
+                                        versions.map((ver, i) => {
                                           return (
                                             <tr key={i}>
                                               <td>{ver.version_code}</td>

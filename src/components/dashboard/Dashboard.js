@@ -1,7 +1,21 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, ResponsiveContainer, Tooltip } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  ResponsiveContainer,
+  Tooltip,
+  PieChart,
+  Pie,
+  AreaChart,
+  Area,
+  Cell,
+  Label,
+  CartesianGrid
+} from "recharts";
 import { Row, Col, Media, Container, Spinner } from "react-bootstrap";
 import { Donut, DonutValue } from 'react-donut-component';
+import { PieChart as PieLib } from 'react-minimal-pie-chart';
 import Moment from 'moment';
 import 'moment/locale/es';
 
@@ -14,69 +28,10 @@ import useIndicators from "../../hooks/useIndicators";
 
 import "./Dashboard.scss";
 
-const data = [
-  {
-    name: "Online",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400
-  },
-  {
-    name: "Corporativo",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210
-  },
-  {
-    name: "NGM",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290
-  },
-  {
-    name: "Convenio",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000
-  }
-];
-
-const data_marketing = [
-  {
-    name: "Alcanzadas",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400
-  },
-  {
-    name: "Comunidad",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210
-  },
-  {
-    name: "Leads",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290
-  }
-];
-
-// const data_circle = [
-//   { name: 'Group A', value: 400 },
-//   { name: 'Group B', value: 300 },
-//   { name: 'Group C', value: 300 },
-//   { name: 'Group D', value: 200 },
-// ];
-
-//const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-
 export default function Dashboard() {
 
   const { data: indicator, loading } = useIndicators();
   const { data: birthday, load: loadBirthday } = useGetBirthday();
-
-  console.log(indicator);
 
   return (
     <Container fluid>
@@ -86,16 +41,19 @@ export default function Dashboard() {
             <Col lg={8}>
               <Row>
                 {
-                  indicator.map(indicador => {
+                  indicator.map((indicador, index) => {
                     return (
-                      <Col lg={indicador.columns * 2}>
+                      <Col lg={indicador.columns * 2} key={index}>
                         <div className="card-sigma">
                           <h5>{indicador.name}</h5>
-                          <div style={{ width: '100%', height: 150 }}>
+                          <div style={{ width: '100%', height: 200 }}>
                             {
-                              (
-                                indicador.chart_type === 'bar' && <span>Mostrando Barras</span>
-                              )
+                              (indicador.chart_type === 'bar' && (indicador.attributes[0].result_attribute ? <BarSigma data={indicador.attributes} /> : <div className="no-data">Indicador {indicador.name} sin datos</div>)) ||
+                              (indicador.chart_type === 'gauge' && (indicador.attributes[0].result_attribute ? <GaugeSigma data={indicador.attributes} /> : <div className="no-data">Indicador {indicador.name} sin datos</div>)) ||
+                              (indicador.chart_type === 'pie' && (indicador.attributes[0].result_attribute ? <PieSigma data={indicador.attributes} /> : <div className="no-data">Indicador {indicador.name} sin datos</div>)) ||
+                              (indicador.chart_type === 'waves' && (indicador.attributes[0].result_attribute ? <WavesSigma data={indicador.attributes} /> : <div className="no-data">Indicador {indicador.name} sin datos</div>)) ||
+                              (indicador.chart_type === 'donut' && (indicador.attributes[0].result_attribute ? <DonutSigma data={indicador.attributes} /> : <div className="no-data">Indicador {indicador.name} sin datos</div>)) ||
+                              (indicador.chart_type === 'percentage' && (indicador.attributes[0].result_attribute ? <PercentageSigma data={indicador.attributes} /> : <div className="no-data">Indicador {indicador.name} sin datos</div>))
                             }
                           </div>
                         </div>
@@ -204,230 +162,198 @@ export default function Dashboard() {
             </Col>
           </Row>
         </Col>
-        <Col lg={4}>
-          <div className="card-sigma">
-            <h5>Relaciones Públicas</h5>
-            <Row>
-              <Col lg={4}>
-                <Donut
-                  color="#000000"
-                  indicatorColor="#225DA9"
-                  animate={true}
-                  linecap="round"
-                  size={100}
-                  strokeWidth={10}
-                  styleIndicator={{
-                    stroke: '#225DA9',
-                    strokeLinecap: 'round'
-                  }}
-                  styleTrack={{
-                    stroke: '#C4C2C1',
-                    strokeWidth: 7
-                  }}
-                >
-                  <DonutValue
-                    style={{
-                      fontWeight: 'bold',
-                      fontSize: '30px',
-                    }}
-                    symbol='%'
-                    styleSymbol={{
-                      fontWeight: 'bold',
-                      fontSize: '14px'
-                    }}
-                  >
-                    95
-                  </DonutValue>
-                </Donut>
-                <span className="label-donut">Satisfacción Colaboradores</span>
-              </Col>
-              <Col lg={4}>
-                <Donut
-                  color="#000000"
-                  indicatorColor="#225DA9"
-                  animate={true}
-                  linecap="round"
-                  size={100}
-                  strokeWidth={10}
-                  styleIndicator={{
-                    stroke: '#225DA9',
-                    strokeLinecap: 'round'
-                  }}
-                  styleTrack={{
-                    stroke: '#C4C2C1',
-                    strokeWidth: 7
-                  }}
-                >
-                  <DonutValue
-                    style={{
-                      fontWeight: 'bold',
-                      fontSize: '30px',
-                    }}
-                    symbol='%'
-                    styleSymbol={{
-                      fontWeight: 'bold',
-                      fontSize: '14px'
-                    }}
-                  >
-                    45
-                  </DonutValue>
-                </Donut>
-                <span className="label-donut">Atención Postventa</span>
-              </Col>
-              <Col lg={4}>
-                <Donut
-                  color="#000000"
-                  indicatorColor="#225DA9"
-                  animate={true}
-                  linecap="round"
-                  size={100}
-                  strokeWidth={10}
-                  styleIndicator={{
-                    stroke: '#225DA9',
-                    strokeLinecap: 'round'
-                  }}
-                  styleTrack={{
-                    stroke: '#C4C2C1',
-                    strokeWidth: 7
-                  }}
-                >
-                  <DonutValue
-                    style={{
-                      fontWeight: 'bold',
-                      fontSize: '30px',
-                    }}
-                    symbol='%'
-                    styleSymbol={{
-                      fontWeight: 'bold',
-                      fontSize: '14px'
-                    }}
-                  >
-                    35
-                  </DonutValue>
-                </Donut>
-                <span className="label-donut">Atención con respuesta</span>
-              </Col>
-            </Row>
-          </div>
-          <div className="card-sigma">
-            <h5>Calidad</h5>
-            <Row>
-              <Col lg={4}>
-                <Donut
-                  color="#000000"
-                  indicatorColor="#225DA9"
-                  animate={true}
-                  linecap="round"
-                  size={100}
-                  strokeWidth={10}
-                  animate={true}
-                  styleIndicator={{
-                    stroke: '#225DA9',
-                    strokeLinecap: 'round'
-                  }}
-                  styleTrack={{
-                    stroke: '#C4C2C1',
-                    strokeWidth: 7
-                  }}
-                >
-                  <DonutValue
-                    style={{
-                      fontWeight: 'bold',
-                      fontSize: '30px',
-                    }}
-                    symbol='%'
-                    styleSymbol={{
-                      fontWeight: 'bold',
-                      fontSize: '14px'
-                    }}
-                  >
-                    95
-                  </DonutValue>
-                </Donut>
-                <span className="label-donut">Proyectos</span>
-              </Col>
-              <Col lg={4}>
-                <Donut
-                  color="#000000"
-                  indicatorColor="#225DA9"
-                  animate={true}
-                  linecap="round"
-                  size={100}
-                  strokeWidth={10}
-                  styleIndicator={{
-                    stroke: '#225DA9',
-                    strokeLinecap: 'round'
-                  }}
-                  styleTrack={{
-                    stroke: '#C4C2C1',
-                    strokeWidth: 7
-                  }}
-                >
-                  <DonutValue
-                    style={{
-                      fontWeight: 'bold',
-                      fontSize: '30px',
-                    }}
-                    symbol='%'
-                    styleSymbol={{
-                      fontWeight: 'bold',
-                      fontSize: '14px'
-                    }}
-                  >
-                    45
-                  </DonutValue>
-                </Donut>
-                <span className="label-donut">Satisfacción Alumnos</span>
-              </Col>
-              <Col lg={4}>
-                <Donut
-                  color="#000000"
-                  indicatorColor="#225DA9"
-                  animate={true}
-                  linecap="round"
-                  size={100}
-                  strokeWidth={10}
-                  styleIndicator={{
-                    stroke: '#225DA9',
-                    strokeLinecap: 'round'
-                  }}
-                  styleTrack={{
-                    stroke: '#C4C2C1',
-                    strokeWidth: 7
-                  }}
-                >
-                  <DonutValue
-                    style={{
-                      fontWeight: 'bold',
-                      fontSize: '30px',
-                    }}
-                    symbol='%'
-                    styleSymbol={{
-                      fontWeight: 'bold',
-                      fontSize: '14px'
-                    }}
-                  >
-                    35
-                  </DonutValue>
-                </Donut>
-                <span className="label-donut">Satisfacción Empresas</span>
-              </Col>
-            </Row>
-          </div>
-        </Col>
       </Row>
     </Container>
   )
 }
 
-const BarSigma = () => {
+const BarSigma = ({ data }) => {
+  let dataGrafica = [];
+  data.map((value) => {
+    dataGrafica = [
+      ...dataGrafica,
+      { name: value.name, value: value.result_attribute.value }
+    ]
+  });
   return (
     <ResponsiveContainer>
-      <BarChart data={data} className="BarChart">
-        <Bar dataKey="uv" fill="#225DA9" />
+      <BarChart data={dataGrafica} className="BarChart">
+        <Bar dataKey="value" fill="#225DA9" />
         <XAxis dataKey="name" />
         <Tooltip />
       </BarChart>
     </ResponsiveContainer>
+  )
+}
+
+const GaugeSigma = ({ data }) => {
+  let dataGauge = [];
+  data.map((value) => {
+    dataGauge = [
+      ...dataGauge,
+      { name: value.name, value: parseInt(value.result_attribute.value) }
+    ]
+  });
+  return (
+    <ResponsiveContainer>
+      <PieChart height={200}>
+        <Pie
+          animate
+          animationDuration={500}
+          animationEasing="ease-out"
+          center={[50, 50]}
+          dataKey="value"
+          startAngle={180}
+          viewBoxSize={[100, 100]}
+          endAngle={0}
+          data={dataGauge}
+          outerRadius={80}
+          cy={140}
+          fill="#225DA9"
+          label
+          radius={PieChart.defaultProps.radius - 3}
+          segmentsShift={(index) => (index === 0 ? 3 : 0.5)}
+          fontSize={12}
+        />
+        <Tooltip />
+      </PieChart>
+    </ResponsiveContainer>
+  )
+}
+
+const PieSigma = ({ data }) => {
+  let dataPie = [];
+  data.map((value) => {
+    dataPie = [
+      ...dataPie,
+      { name: value.name, value: parseInt(value.result_attribute.value) }
+    ]
+  });
+  return (
+    <ResponsiveContainer>
+      <div style={{ width: '100%', height: 200 }}>
+        <ResponsiveContainer>
+          <PieChart>
+            <Pie
+              dataKey="value"
+              data={dataPie}
+              fill="#225DA9"
+              label
+              fontSize={12}
+            />
+            <Tooltip />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+    </ResponsiveContainer>
+  )
+}
+
+const WavesSigma = ({ data }) => {
+  let dataWaves = [];
+  data.map((value) => {
+    dataWaves = [
+      ...dataWaves,
+      { name: value.name, value: value.result_attribute.value }
+    ]
+  });
+  return (
+    <ResponsiveContainer>
+      <AreaChart
+        data={dataWaves}
+        margin={{
+          top: 10,
+          right: 10,
+          left: 25,
+          bottom: 0
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" fontSize={12} />
+        <Tooltip />
+        <Area type="monotone" dataKey="value" stroke="#225DA9" fill="#225DA9" />
+      </AreaChart>
+    </ResponsiveContainer>
+  )
+}
+
+const DonutSigma = ({ data }) => {
+  let dataDonut = [];
+  data.map((value) => {
+    dataDonut = [
+      ...dataDonut,
+      { name: `${value.name} ${value.result_attribute.value}`, value: parseInt(value.result_attribute.value) }
+    ]
+  });
+  return (
+    <div style={{ width: '100%', height: 200 }}>
+      <ResponsiveContainer>
+        <PieChart >
+          <Pie
+            data={dataDonut}
+            cy={100}
+            innerRadius={60}
+            outerRadius={80}
+            fill="#225DA9"
+            paddingAngle={5}
+            dataKey="value"
+            label
+            fontSize={12}
+          >
+          </Pie>
+          <Tooltip />
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
+  )
+}
+
+const PercentageSigma = ({ data }) => {
+  return (
+    <div className="separator">
+      <Row>
+        {
+          data.map(per => {
+            console.log(per);
+            return (
+              <Col lg={4}>
+                <Donut
+                  color="#000000"
+                  indicatorColor="#225DA9"
+                  animate={true}
+                  linecap="round"
+                  size={100}
+                  strokeWidth={10}
+                  styleIndicator={{
+                    stroke: '#225DA9',
+                    strokeLinecap: 'round'
+                  }}
+                  styleTrack={{
+                    stroke: '#C4C2C1',
+                    strokeWidth: 7
+                  }}
+                >
+                  <DonutValue
+                    style={{
+                      fontWeight: 'bold',
+                      fontSize: '30px',
+                    }}
+                    symbol='%'
+                    styleSymbol={{
+                      fontWeight: 'bold',
+                      fontSize: '14px'
+                    }}
+                  >
+                    {per.result_attribute.value}
+                  </DonutValue>
+                </Donut>
+                <span className="label-donut">{per.name}</span>
+              </Col>
+            )
+
+          })
+        }
+      </Row>
+    </div>
   )
 } 

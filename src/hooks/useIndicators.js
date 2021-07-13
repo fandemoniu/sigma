@@ -25,7 +25,7 @@ export default function useIndicators() {
       .then( resp => resp.json() )
       .then( data => {
         setstate({
-          data: data.items.data,
+          data: data.items,
           loading: false,
           error: null
         })

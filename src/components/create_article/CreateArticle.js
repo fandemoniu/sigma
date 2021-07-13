@@ -1,22 +1,85 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Spinner, Modal } from "react-bootstrap";
 import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import { values, size } from "lodash";
 import { store } from 'react-notifications-component';
+import { useDropzone } from 'react-dropzone';
 
 import "./CreateArticle.scss";
 import Add from "../../assets/images/add.svg";
 import Success from "../../assets/images/success.svg";
+import FileImage from "../../assets/images/file.svg";
 
 import { getToken } from "../../api/auth";
 import useFetch from "../../hooks/useFetch";
 import { createArticleApi, createSections } from "../../api/wiki";
 import { Link } from 'react-router-dom';
 
+const baseStyle = {
+  flex: 1,
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  padding: '20px',
+  borderWidth: 2,
+  borderRadius: 15,
+  height: 150,
+  justifyContent: 'center',
+  borderColor: '#225DA9',
+  borderStyle: 'dashed',
+  backgroundColor: '#fafafa',
+  color: '#bdbdbd',
+  outline: 'none',
+  transition: 'border .24s ease-in-out'
+};
+
+const activeStyle = {
+  borderColor: '#2196f3'
+};
+
+const acceptStyle = {
+  borderColor: '#00e676'
+};
+
+const rejectStyle = {
+  borderColor: '#ff1744'
+};
+
+const thumbsContainer = {
+  display: 'flex',
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  marginTop: 16
+};
+
+const thumb = {
+  display: 'inline-flex',
+  borderRadius: 2,
+  border: '1px solid #eaeaea',
+  marginBottom: 8,
+  marginRight: 8,
+  width: 100,
+  height: 100,
+  padding: 4,
+  boxSizing: 'border-box'
+};
+
+const thumbInner = {
+  display: 'flex',
+  minWidth: 0,
+  overflow: 'hidden'
+};
+
+const img = {
+  display: 'block',
+  width: 'auto',
+  height: '100%'
+};
+
 export default function CreateArticle() {
-  // Set modal
+
   const [modalShow, setModalShow] = useState(false);
 
   const [smShow, setSmShow] = useState(false);
@@ -34,12 +97,64 @@ export default function CreateArticle() {
   const [articleLoading, setArticleLoading] = useState(false);
   // State editor
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
+  const [files, setFiles] = useState([]);
+
+  const [filesSave, setFilesSave] = useState([]);
+
   // Get token
   const token = getToken();
   // Get sections
   const { data } = useFetch(token, bandera);
   // Validate data
   const sections = !!data && data;
+
+  const {
+    acceptedFiles,
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragAccept,
+    isDragReject
+  } = useDropzone({
+    onDrop: acceptedFiles => {
+      setFiles(acceptedFiles.map(file => Object.assign(file, {
+        preview: file.type == 'image/png' || file.type == 'image/jpeg' ? URL.createObjectURL(file) : FileImage,
+      })));
+      setArticleData({
+        ...articleData,
+        documents: acceptedFiles,
+      })
+    }
+  });
+
+  const style = useMemo(() => ({
+    ...baseStyle,
+    ...(isDragActive ? activeStyle : {}),
+    ...(isDragAccept ? acceptStyle : {}),
+    ...(isDragReject ? rejectStyle : {})
+  }), [
+    isDragActive,
+    isDragReject,
+    isDragAccept
+  ]);
+
+  const thumbs = files.map(file => (
+    <div style={thumb} key={file.name}>
+      <div style={thumbInner}>
+        <img
+          src={file.preview}
+          style={img}
+        />
+      </div>
+    </div>
+  ));
+
+  useEffect(() => () => {
+    // Make sure to revoke the data uris to avoid memory leaks
+    files.forEach(file => URL.revokeObjectURL(file.preview));
+  }, [files]);
+
   // hanlde editor
   const handleEditorChange = (editorState) => {
     setEditorState(editorState);
@@ -93,7 +208,7 @@ export default function CreateArticle() {
     if (validSection !== size(section)) {
       // Show notification danger
       notification("Error al agregar sección.", "Por favor ingrese una sección.", "danger");
-    } else{
+    } else {
       // Send data to api
       const response = await createSections(section);
       // Validate response
@@ -110,11 +225,12 @@ export default function CreateArticle() {
       }
     }
   }
+
   // Handle submit
   const onSubmit = async (e) => {
     // Prevent default
     e.preventDefault();
-    // Initial counter form zero
+    // Conuter Valid
     let validCount = 0;
     // Foreach data login
     values(articleData).some(value => {
@@ -213,6 +329,19 @@ export default function CreateArticle() {
                   onEditorStateChange={handleEditorChange}
                 />
               </div>
+
+              <span className="labeli mb-15">Archivos</span>
+
+              <div>
+                <div {...getRootProps({ style })}>
+                  <input {...getInputProps()} />
+                  <span>Arrastre y suelte sus archivos aquí, o haga clic para seleccionar archivos</span>
+                </div>
+                <aside style={thumbsContainer}>
+                  {thumbs}
+                </aside>
+              </div>
+
               <Row>
                 <Col lg={6}>
                   <Form.Group>
@@ -295,6 +424,13 @@ function MyVerticallyCenteredModal(props) {
           <img src={Success} alt="Success" />
           <h1>¡Guardado con exito!</h1>
         </div>
+        <div className="wrapper-button-article">
+          <Link to="/wiki">
+            <div className="btn-create-article">
+              <span>¡OK!</span>
+            </div>
+          </Link>
+        </div>
       </Modal.Body>
     </Modal>
   );
@@ -341,7 +477,8 @@ const initialArticleValue = () => {
     index: "",
     folio: "",
     description: "",
-    version_code: ""
+    version_code: "",
+
   }
 }
 
@@ -361,4 +498,5 @@ const notification = (title, message, type) => {
     }
   });
 }
+
 

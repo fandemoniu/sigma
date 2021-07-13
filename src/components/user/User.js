@@ -11,17 +11,22 @@ import Add from "../../assets/images/add.svg";
 import Avatar from "../../assets/images/avatar.svg";
 import Personal from "../../assets/images/Personal.svg";
 
-import { editRol } from "../../api/rol";
+import { editRol, editUserRol } from "../../api/rol";
 
 import { store } from 'react-notifications-component';
+import { getUser } from "../../hooks/useUsers";
 
 import "./User.scss";
 
 export default function User() {
 
+  const [smShow, setSmShow] = useState(false);
+
   const [bandera, setbandera] = useState(false);
 
   const [idRol, setId] = useState(null);
+  
+  const [idU, setIdU] = useState(null);
 
   const [edit, setEdit] = useState(false);
 
@@ -30,13 +35,16 @@ export default function User() {
   const { data: permiso } = usePermissions();
 
   const [checked, setChecked] = useState(false);
+
   // Edit Role
   const [editRole, setEditRole] = useState({
     name: "",
     permissions: []
   });
   // Usuarios
-  const { data: users, loading } = useUsers();
+  const { data: users, loading } = useUsers(bandera);
+
+  const [rolUser, setRolUser] = useState(initialUser(users));
   // Roles
   const { data: roles, load } = useRoles(bandera);
 
@@ -53,10 +61,30 @@ export default function User() {
     setEdit(true);
   }
 
+  const handleUserRole = async (e, id) => {
+    const user = await getUser(id);
+    setRolUser({
+      name: user[0].profile.name,
+      last_name: user[0].profile.last_name,
+      work_position: user[0].profile.work_position,
+      birthdate: user[0].profile.birthdate,
+      phone: user[0].profile.phone,
+    });
+    setIdU(id);
+    setSmShow(true);
+  }
+
+  const changeUserRole = (e) => {
+    setRolUser({
+      ...rolUser,
+      [e.target.name]: e.target.value
+    })
+  }
+
   const handleCheckboxChange = (e) => {
     let newArray = [
       ...editRole.permissions,
-      e.target.id 
+      e.target.id
     ];
     if (editRole.permissions.includes(e.target.id)) {
       newArray = newArray.filter(permit => permit !== e.target.id);
@@ -75,6 +103,29 @@ export default function User() {
     setChecked(false);
   }
 
+  const sendUserRoller = async (e) => {
+    e.preventDefault();
+    if (rolUser.role == "") {
+      notification("Error al asignar rol.", "Por favor ingrese un rol.", "danger");
+    }else{
+      // Send data to api
+      const response = await editUserRol(rolUser, idU);
+      // Validate response
+      if (response.code == 200 && response.status == "success") {
+        handleBandera();
+        setSmShow(false);
+        setModalShow(true);
+      } else {
+        if (Array.isArray(response.message)) {
+          notification("Error al asignar Rol.", response.message[0], "danger");
+        } else {
+          notification("Error al asignar Rol.", response.message, "danger");
+        }
+      }
+
+    }
+  }
+
   const envioData = async (e) => {
     e.preventDefault();
     if (!editRole.name.length > 0 || !editRole.permissions.length > 0) {
@@ -82,13 +133,13 @@ export default function User() {
     } else {
       // Mapiamosla respuesta
       let arrayPer = [];
-      editRole.permissions.map( (permis)  => {
+      editRole.permissions.map((permis) => {
         arrayPer = [
           ...arrayPer,
-          {name: permis}
+          { name: permis }
         ]
       });
-      
+
       const data = {
         name: editRole.name,
         permissions: arrayPer
@@ -102,9 +153,9 @@ export default function User() {
         setModalShow(true);
       } else {
         if (Array.isArray(response.message)) {
-          notification("Error al agregar artículo.", response.message[0], "danger");
+          notification("Error al agregar Rol.", response.message[0], "danger");
         } else {
-          notification("Error al agregar artículo.", response.message, "danger");
+          notification("Error al agregar Rol.", response.message, "danger");
         }
       }
     }
@@ -140,8 +191,9 @@ export default function User() {
                             />
                             <Media.Body>
                               <span className="name-user">{user.profile.name} {user.profile.last_name}</span>
-                              <span className="rol">Root</span>
+                              <span className="rol">Falta</span>
                             </Media.Body>
+                            <Button className="edit-user-role" onClick={(e) => handleUserRole(e, user.profile.id)}>Editar rol</Button>
                           </Media>
                         </div>
                       ))
@@ -203,6 +255,15 @@ export default function User() {
           checked={checked}
           envioData={envioData}
         />
+        <EditUserRole
+          size="sm"
+          show={smShow}
+          onHide={() => setSmShow(false)}
+          rolUser={rolUser}
+          roles={roles}
+          changeUserRole={changeUserRole}
+          sendUserRoller={sendUserRoller}
+        />
         <MyVerticallyCenteredModal
           show={modalShow}
           onHide={() => setModalShow(false)}
@@ -211,6 +272,45 @@ export default function User() {
         />
       </Container>
     </>
+  )
+}
+
+function EditUserRole(props) {
+  const { rolUser, roles, changeUserRole, sendUserRoller, ...remi } = props;
+  return (
+    <Modal
+      {...remi}
+      aria-labelledby="example-modal-sizes-title-sm"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="example-modal-sizes-title-sm">
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <form onSubmit={sendUserRoller}>
+          <Form.Label className="labeli">
+            Roles
+          </Form.Label>
+          <Form.Control
+            as="select"
+            className="form-control-art"
+            name="role"
+            onChange={changeUserRole}
+            value={rolUser.role}
+          >
+            <option value="">Selecionar role</option>
+            {
+              roles.map(rol => (
+                <option key={rol.id} value={rol.name}>{rol.name}</option>
+              ))
+            }
+          </Form.Control>
+          <hr />
+          <Button className="save-rol" type="submit">Guardar cambios</Button>
+        </form>
+      </Modal.Body>
+    </Modal>
   )
 }
 
@@ -303,4 +403,17 @@ const notification = (title, message, type) => {
       onScreen: true
     }
   });
+}
+
+const initialUser = (users) => {
+  const user = users[0];
+  console.log(users);
+  return {
+    name: "",
+    last_name: "",
+    work_position: "",
+    birthdate: "",
+    phone: "",
+    role: ""
+  }
 }

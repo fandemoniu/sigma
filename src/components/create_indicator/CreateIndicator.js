@@ -9,11 +9,11 @@ import {createIndicator } from "../../api/indicator";
 import "./CreateIndicator.scss";
 
 import BarChart from "../../assets/images/bar-chart.svg";
-import Point from "../../assets/images/point.svg";
-import PieChart from "../../assets/images/pie-chart.svg";
-import OnlyData from "../../assets/images/only-data.svg";
+import Gauge from "../../assets/images/gauge.svg";
+import Pie from "../../assets/images/pie.svg";
+import Waves from "../../assets/images/waves.svg";
 import Percentage from "../../assets/images/percentage.svg";
-import Cuadrado from "../../assets/images/cuadrado.svg";
+import Donut from "../../assets/images/donut.svg";
 import Success from "../../assets/images/success.svg";
 import Save from "../../assets/images/save.svg";
 
@@ -201,10 +201,10 @@ export default function CreateIndicator() {
                     value={data.chart_type}
                     onChange={handleData}
                     type="radio"
-                    id="point"
+                    id="gauge"
                   />
-                  <label for="point" className="label-chart">
-                    <img src={Point} alt="Puntos" />
+                  <label for="gauge" className="label-chart">
+                    <img src={Gauge} alt="Gauge" />
                   </label>
                 </div>
               </Col>
@@ -218,7 +218,7 @@ export default function CreateIndicator() {
                     id="pie"
                   />
                   <label for="pie" className="label-chart">
-                    <img src={PieChart} alt="Pie Chart" />
+                    <img src={Pie} alt="Pie Chart" />
                   </label>
                 </div>
               </Col>
@@ -231,10 +231,10 @@ export default function CreateIndicator() {
                     value={data.chart_type}
                     onChange={handleData}
                     type="radio"
-                    id="onlyData"
+                    id="waves"
                   />
-                  <label for="onlyData" className="label-chart">
-                    <img src={OnlyData} alt="Unico Dato" />
+                  <label for="waves" className="label-chart">
+                    <img src={Waves} alt="Waves" />
                   </label>
                 </div>
               </Col>
@@ -245,10 +245,10 @@ export default function CreateIndicator() {
                     value={data.chart_type}
                     onChange={handleData}
                     type="radio"
-                    id="square"
+                    id="donut"
                   />
-                  <label for="square" className="label-chart">
-                    <img src={Cuadrado} alt="Cuadrado" />
+                  <label for="donut" className="label-chart">
+                    <img src={Donut} alt="Donut" />
                   </label>
                 </div>
               </Col>

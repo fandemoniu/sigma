@@ -50,9 +50,9 @@ function AttributeComp(props) {
       setModalShow(true);
     } else {
       if (Array.isArray(response.message)) {
-        notification("Error al agregar artículo.", response.message[0], "danger");
+        notification("Error al agregar datos.", response.message[0], "danger");
       } else {
-        notification("Error al agregar artículo.", response.message, "danger");
+        notification("Error al agregar datos.", response.message, "danger");
       }
     }
   };

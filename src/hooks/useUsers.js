@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { API_HOST } from '../utils/constant';
 import { getToken } from "../api/auth";
 
-export default function useUsers() {
+export default function useUsers(bandera) {
   // State main
   const [state, setstate] = useState({
     data: [],
@@ -25,13 +25,13 @@ export default function useUsers() {
       .then( resp => resp.json() )
       .then( data => {
         setstate({
-          data: data.items.data,
+          data: data.items,
           loading: false,
           error: null
         })
       })
     
-  },[])
+  },[bandera])
 
   return state;
 
