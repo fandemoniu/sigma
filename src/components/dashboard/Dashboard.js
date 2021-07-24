@@ -46,7 +46,7 @@ export default function Dashboard() {
                       <Col lg={indicador.columns * 2} key={index}>
                         <div className="card-sigma">
                           <h5>{indicador.name}</h5>
-                          <div style={{ width: '100%', height: 200 }}>
+                          <div style={{ width: '100%', height: 240 }}>
                             {
                               (indicador.chart_type === 'bar' && (indicador.attributes[0].result_attribute ? <BarSigma data={indicador.attributes} /> : <div className="no-data">Indicador {indicador.name} sin datos</div>)) ||
                               (indicador.chart_type === 'gauge' && (indicador.attributes[0].result_attribute ? <GaugeSigma data={indicador.attributes} /> : <div className="no-data">Indicador {indicador.name} sin datos</div>)) ||
@@ -178,7 +178,7 @@ const BarSigma = ({ data }) => {
   return (
     <ResponsiveContainer>
       <BarChart data={dataGrafica} className="BarChart">
-        <Bar dataKey="value" fill="#225DA9" />
+        <Bar dataKey="value" fill="#0082CB"/>
         <XAxis dataKey="name" />
         <Tooltip />
       </BarChart>
@@ -195,6 +195,7 @@ const GaugeSigma = ({ data }) => {
     ]
   });
   return (
+    <>
     <ResponsiveContainer>
       <PieChart height={200}>
         <Pie
@@ -209,15 +210,30 @@ const GaugeSigma = ({ data }) => {
           data={dataGauge}
           outerRadius={80}
           cy={140}
-          fill="#225DA9"
+          fill="#0082CB"
           label
           radius={PieChart.defaultProps.radius - 3}
           segmentsShift={(index) => (index === 0 ? 3 : 0.5)}
-          fontSize={12}
+          fontSize={14}
         />
         <Tooltip />
       </PieChart>
     </ResponsiveContainer>
+    <div className="content-info">
+      {
+        data.map((value, i) =>{
+          return(
+            <div key={i}>
+              <div className="cubit"></div>
+              <span>{value.name}:</span>
+              <span>{value.result_attribute.value}</span>
+            </div>
+          )
+        })
+      }
+    </div>
+    </>
+    
   )
 }
 
@@ -230,22 +246,37 @@ const PieSigma = ({ data }) => {
     ]
   });
   return (
+    <>
     <ResponsiveContainer>
-      <div style={{ width: '100%', height: 200 }}>
+      <div style={{ width: '100%', height: 190 }}>
         <ResponsiveContainer>
           <PieChart>
             <Pie
               dataKey="value"
               data={dataPie}
-              fill="#225DA9"
+              fill="#0082CB"
               label
-              fontSize={12}
+              fontSize={14}
             />
             <Tooltip />
           </PieChart>
         </ResponsiveContainer>
       </div>
     </ResponsiveContainer>
+    <div className="content-info">
+      {
+        data.map((value, i) =>{
+          return(
+            <div key={i}>
+              <div className="cubit"></div>
+              <span>{value.name}:</span>
+              <span>{value.result_attribute.value}</span>
+            </div>
+          )
+        })
+      }
+    </div>
+    </>
   )
 }
 
@@ -262,16 +293,13 @@ const WavesSigma = ({ data }) => {
       <AreaChart
         data={dataWaves}
         margin={{
-          top: 10,
-          right: 10,
-          left: 25,
-          bottom: 0
+          top: 10, right: 30, left: 0, bottom: 0
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" fontSize={12} />
         <Tooltip />
-        <Area type="monotone" dataKey="value" stroke="#225DA9" fill="#225DA9" />
+        <Area type="monotone" dataKey="value" stroke="#0082CB" fill="#0082CB" opacity={1} />
       </AreaChart>
     </ResponsiveContainer>
   )
@@ -294,16 +322,29 @@ const DonutSigma = ({ data }) => {
             cy={100}
             innerRadius={60}
             outerRadius={80}
-            fill="#225DA9"
+            fill="#0082CB"
             paddingAngle={5}
             dataKey="value"
             label
-            fontSize={12}
+            fontSize={14}
           >
           </Pie>
           <Tooltip />
         </PieChart>
       </ResponsiveContainer>
+      <div className="content-info">
+      {
+        data.map((value, i) =>{
+          return(
+            <div key={i}>
+              <div className="cubit"></div>
+              <span>{value.name}:</span>
+              <span>{value.result_attribute.value}</span>
+            </div>
+          )
+        })
+      }
+    </div>
     </div>
   )
 }
@@ -315,16 +356,16 @@ const PercentageSigma = ({ data }) => {
         {
           data.map(per => {
             return (
-              <Col lg={4}>
+              <Col lg={12/data.length}>
                 <Donut
                   color="#000000"
-                  indicatorColor="#225DA9"
+                  indicatorColor="#0082CB"
                   animate={true}
                   linecap="round"
                   size={100}
                   strokeWidth={10}
                   styleIndicator={{
-                    stroke: '#225DA9',
+                    stroke: '#0082CB',
                     strokeLinecap: 'round'
                   }}
                   styleTrack={{

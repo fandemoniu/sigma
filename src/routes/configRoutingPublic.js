@@ -14,6 +14,7 @@ export default [
   },
   {
     path: "*",
+    exact: false,
     page: Login
   }
 ];

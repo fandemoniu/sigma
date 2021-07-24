@@ -9,7 +9,7 @@ import configRoutingPublic from "./routes/configRoutingPublic";
 import ReactNotification from "react-notifications-component";
 import { AuthContext } from "./utils/contexts";
 import { isUserLoged } from "./api/auth";
-import { BrowserRouter as Router, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Redirect, HashRouter } from "react-router-dom";
 
 import PublicRoute from "./routes/PublicRoute";
 import PrivateRoute from "./routes/PrivateRoute";
@@ -50,7 +50,7 @@ export default function App() {
                   key={i}
                   setRefreshCheckLogin={setRefreshCheckLogin} 
                   restricted={false} 
-                  component={r.page} 
+                  component={r.page}
                   path={r.path} 
                   exact={r.exact}
                 />
@@ -59,42 +59,5 @@ export default function App() {
         </Switch>
       </Router>
     </AuthContext.Provider>
-  )
-  // return(
-  //   <AuthContext.Provider value={user}> 
-  //     <ReactNotification />
-  //     <Routes setRefreshCheckLogin={setRefreshCheckLogin} />
-  //   </AuthContext.Provider>
-  // );
-  // Return main
-  // return (
-  //   <AuthContext.Provider value={user}>
-  //     <ReactNotification /> 
-  //     {
-  //       user 
-  //         ? <Routing setRefreshCheckLogin={setRefreshCheckLogin} /> 
-  //         : <Login setRefreshCheckLogin={setRefreshCheckLogin} />
-  //     }
-  //   </AuthContext.Provider>
-  // );
-
-
-
-  // return (
-  //   <Router>
-  //     <Switch>
-  //       <PublicRoute restricted={false} component={Home} path="/" exact />
-  //       <PublicRoute restricted={true} component={SignIn} path="/signin" exact />
-  //       <PrivateRoute component={Dashboard} path="/dashboard" exact />
-  //     </Switch>
-  //   </Router>
-  // );
-
-
-}
-
-const Rd = () => {
-  return (
-    <h1>Que Tranza</h1>
   )
 }

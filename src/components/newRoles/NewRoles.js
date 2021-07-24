@@ -102,10 +102,6 @@ export default function NewRoles() {
         <Row>
           <Col>
             <div className="card-user">
-              <Button className="wrap-button-col" onClick={handleSubmit}>
-                <img src={Add} alt="Agregar Rol" />
-                <span>Añadir Rol</span>
-              </Button>
               {
                 load
                   ?
@@ -149,6 +145,10 @@ export default function NewRoles() {
                     }
                   </>
               }
+              <Button className="wrap-button-col" onClick={handleSubmit}>
+                <img src={Add} alt="Agregar Rol" />
+                <span>Añadir Rol</span>
+              </Button>
             </div>
           </Col>
           <Col>

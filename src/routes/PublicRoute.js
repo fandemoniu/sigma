@@ -4,12 +4,11 @@ import { isUserLoged } from "../api/auth";
 
 const PublicRoute = ({ component: Component, restricted, setRefreshCheckLogin, ...rest }) => {
   return (
-    <Route {...rest}
-      render={ props => (
-        isUserLoged() && restricted
-          ? <Redirect to="/" />
-          : <Component {...props} setRefreshCheckLogin={setRefreshCheckLogin}/>
-      )}
+    <Route {...rest} render={props => (
+      isUserLoged()
+        ? <Redirect to="/" />
+        : <Component {...props} setRefreshCheckLogin={setRefreshCheckLogin} />
+    )}
     />
   );
 };
